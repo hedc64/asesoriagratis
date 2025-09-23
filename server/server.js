@@ -85,20 +85,9 @@ db.serialize(() => {
   // Programar copias de seguridad diarias
   setInterval(createBackup, 24 * 60 * 60 * 1000);
 
-  // Liberar números seleccionados después de 1 hora
-  setInterval(() => {
-    const now = new Date();
-    const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-
-    db.run(
-      `UPDATE numbers SET status = 'disponible', selected_at = NULL, buyer_name = NULL, buyer_phone = NULL, buyer_id = NULL 
-       WHERE status = 'seleccionado' AND selected_at < ?`,
-      [oneHourAgo.toISOString()],
-      (err) => {
-        if (err) console.error('Error liberando números:', err);
-      }
-    );
-  }, 60000); // Cada minuto
+  // Eliminar la liberación automática de números seleccionados
+  // Ya no es necesario porque el sorteo es gratis y los dispositivos están registrados
+  // El código anterior se ha eliminado intencionalmente
 });
 
 // Iniciar servidor
@@ -107,4 +96,5 @@ app.listen(PORT, () => {
   console.log(`Servidor en puerto ${PORT}`);
   console.log(`Base de datos en: ${path.resolve(__dirname, '../rifa.db')}`);
   console.log(`Copias de seguridad en: ${backupDir}`);
+  console.log('Sorteo de Asesoría Visa iniciado correctamente');
 });
