@@ -29,9 +29,9 @@ router.get('/numbers', (req, res) => {
 
 // Seleccionar un número (participación gratuita)
 router.post('/select', (req, res) => {
-  const { number, buyerName, buyerPhone, buyerId, deviceId } = req.body;
+  const { number, buyerName, buyerPhone, buyerId, buyerAddress, deviceId} = req.body;
 
-  if (!number || !buyerName || !buyerPhone || !buyerId || !deviceId) {
+  if (!number || !buyerName || !buyerPhone || !buyerId  || !buyerAddress || !deviceId) {
     return res.status(400).json({ error: 'Faltan datos obligatorios' });
   }
 
@@ -57,6 +57,7 @@ router.post('/select', (req, res) => {
           buyer_name = ?, 
           buyer_phone = ?, 
           buyer_id = ?,
+          buyer_address = ?,
           device_id = ?
          WHERE number = ?`,
         [
@@ -64,6 +65,7 @@ router.post('/select', (req, res) => {
           buyerName,
           buyerPhone,
           buyerId,
+          buyerAddress,
           deviceId,
           number
         ],

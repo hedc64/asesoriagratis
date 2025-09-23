@@ -152,8 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const buyerName = prompt('Nombre completo:');
     const buyerPhone = prompt('Teléfono:');
     const buyerId = prompt('Cédula:');
+    const buyerAddress = prompt('Direccion:');
 
-    if (!buyerName || !buyerPhone || !buyerId) {
+    if (!buyerName || !buyerPhone || !buyerId || !buyerAddress) {
       alert('Debe ingresar todos los datos');
       return;
     }
@@ -167,6 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buyerName,
         buyerPhone,
         buyerId,
+        buyerAddress,  // nuuevo
         deviceId
       })
     })

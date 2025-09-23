@@ -69,9 +69,9 @@ router.post('/configure-sorteo', authMiddleware, (req, res) => {
 
 // ✅ Validar participación individual (modificado para sorteo gratis)
 router.post('/validate', authMiddleware, (req, res) => {
-  const { number, buyer_name, buyer_phone, buyer_id } = req.body;
+  const { number, buyer_name, buyer_phone, buyer_id, buyer_address} = req.body;
 
-  if (!number || !buyer_name || !buyer_phone || !buyer_id) {
+  if (!number || !buyer_name || !buyer_phone || !buyer_id || !buyer_address) {
     return res.status(400).json({ error: 'Faltan datos obligatorios del participante' });
   }
 
@@ -82,12 +82,14 @@ router.post('/validate', authMiddleware, (req, res) => {
       buyer_name = ?, 
       buyer_phone = ?, 
       buyer_id = ?
+      buyer_address = ?  
      WHERE number = ? AND status = 'seleccionado'`,
     [
       new Date().toISOString(),
       buyer_name,
       buyer_phone,
       buyer_id,
+      buyer_address, // nuevo
       number
     ],
     function (err) {
@@ -102,13 +104,13 @@ router.post('/validate', authMiddleware, (req, res) => {
 
 // ✅ Validar múltiples participaciones (mantenida para compatibilidad)
 router.post('/validate-multiple', authMiddleware, (req, res) => {
-  const { numbers, buyer_name, buyer_phone, buyer_id } = req.body;
+  const { numbers, buyer_name, buyer_phone, buyer_id, buyer_address} = req.body;
 
   if (!Array.isArray(numbers) || numbers.length === 0) {
     return res.status(400).json({ error: 'Debe seleccionar al menos un número' });
   }
 
-  if (!buyer_name || !buyer_phone || !buyer_id) {
+  if (!buyer_name || !buyer_phone || !buyer_id || !buyer_address) {
     return res.status(400).json({ error: 'Faltan datos del participante para validación múltiple' });
   }
 
@@ -135,12 +137,13 @@ router.post('/validate-multiple', authMiddleware, (req, res) => {
           buyer_name = ?, 
           buyer_phone = ?, 
           buyer_id = ?
+          buyer_address = ? 
          WHERE number = ?`
       );
 
       let hasError = false;
       numbers.forEach(num => {
-        stmt.run(validatedAt, buyer_name, buyer_phone, buyer_id, num, (err) => {
+        stmt.run(validatedAt, buyer_name, buyer_phone, buyer_id, buyer_address, num, (err) => {
           if (err) {
             console.error(`❌ Error al validar número ${num}:`, err.message);
             hasError = true;
