@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         method: 'POST',
         body: JSON.stringify(data)
       })
-        .then(res => res.ok ? res.json() : Promise.reject('Error al validar pago'))
+        .then(res => res.ok ? res.json() : Promise.reject('Error al validar participante'))
         .then(data => {
           alert(data.message || data.error);
           loadAdminPanel();
@@ -254,13 +254,13 @@ document.addEventListener('DOMContentLoaded', () => {
           buyer_address
         })
       })
-        .then(res => res.ok ? res.json() : Promise.reject('Error al validar los pagos'))
+        .then(res => res.ok ? res.json() : Promise.reject('Error al validar los participantes'))
         .then(data => {
           alert(data.message || data.error);
           loadAdminPanel(); // Recargar datos después de validar
         })
         .catch(err => {
-          console.error('Error al validar múltiples pagos:', err);
+          console.error('Error al validar múltiples participantes:', err);
           alert(err);
         });
     });

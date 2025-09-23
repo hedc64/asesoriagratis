@@ -81,7 +81,7 @@ router.post('/validate', authMiddleware, (req, res) => {
       validated_at = ?, 
       buyer_name = ?, 
       buyer_phone = ?, 
-      buyer_id = ?
+      buyer_id = ?,
       buyer_address = ?  
      WHERE number = ? AND status = 'seleccionado'`,
     [
@@ -89,7 +89,7 @@ router.post('/validate', authMiddleware, (req, res) => {
       buyer_name,
       buyer_phone,
       buyer_id,
-      buyer_address, // nuevo
+      buyer_address, 
       number
     ],
     function (err) {
@@ -136,7 +136,7 @@ router.post('/validate-multiple', authMiddleware, (req, res) => {
           validated_at = ?, 
           buyer_name = ?, 
           buyer_phone = ?, 
-          buyer_id = ?
+          buyer_id = ?,
           buyer_address = ? 
          WHERE number = ?`
       );
