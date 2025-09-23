@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buyerName,
         buyerPhone,
         buyerId,
-        buyerAddress,  // nuuevo
+        buyerAddress,  
         deviceId
       })
     })
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error('Error al enviar selección:', err);
-        alert('Error al seleccionar número');
+        alert('Error seleccionar solo un número');
       });
   });
 });

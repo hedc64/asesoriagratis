@@ -237,10 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const buyer_name = prompt('Nombre completo:');
       const buyer_phone = prompt('Teléfono:');
       const buyer_id = prompt('Cédula:');
-      const buyer_address = prompt('Dirección (opcional):');
+      const buyer_address = prompt('Dirección:');
 
-            if (!buyer_name || !buyer_phone || !buyer_id) {
-        alert('Debe ingresar nombre, teléfono y cédula');
+            if (!buyer_name || !buyer_phone || !buyer_id || !buyer_address) {
+        alert('Debe ingresar nombre, teléfono, cédula y direccion');
         return;
       }
 
