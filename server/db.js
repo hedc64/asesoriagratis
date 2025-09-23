@@ -25,7 +25,8 @@ function verifyAndAddColumns() {
   const requiredColumns = [
     { name: 'buyer_address', type: 'TEXT' },
     { name: 'winner_name', type: 'TEXT' },
-    { name: 'draw_date', type: 'DATETIME' }
+    { name: 'draw_date', type: 'DATETIME' },
+    { name: 'device_id', type: 'TEXT' } // <-- AGREGAR ESTA COLUMNA
   ];
 
   db.all("PRAGMA table_info(numbers)", (err, columns) => {

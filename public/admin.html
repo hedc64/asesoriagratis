@@ -7,8 +7,8 @@
   <title>Panel de Administración</title>
 
   <!-- Meta etiquetas para redes sociales -->
-  <meta property="og:title" content="Panel de Administración - Rifa Visa">
-  <meta property="og:description" content="Gestiona números, pagos y ganadores de la rifa de asesoría de visa.">
+  <meta property="og:title" content="Panel de Administración - Sorteo de Asesoría Visa">
+  <meta property="og:description" content="Gestiona participaciones y ganadores del sorteo de asesoría de visa.">
   <meta property="og:image" content="https://tusitio.com/admin-preview.jpg">
   <meta property="og:url" content="https://rifa-app-t8qo.onrender.com/admin.html">
   <meta property="og:type" content="website">
@@ -42,9 +42,9 @@
         <p><strong>Fecha actual:</strong> <span id="current-date">Cargando...</span></p>
       </form>
 
-      <h2>Validar Pagos</h2>
+      <h2>Validar Participaciones</h2>
       <section id="pending-payments" aria-label="Validación múltiple">
-        <h3>Números Pendientes de Validación</h3>
+        <h3>Participaciones Pendientes de Validación</h3>
         <div id="pending-numbers-list"></div>
         <button id="validate-selected">Validar Seleccionados</button>
       </section>
@@ -55,8 +55,8 @@
         <input type="text" id="validate-name" placeholder="Nombre completo" required>
         <input type="text" id="validate-phone" placeholder="Teléfono" required>
         <input type="text" id="validate-id" placeholder="Cédula" required>
-        <input type="text" id="validate-address" placeholder="Dirección">
-        <button type="submit">Validar Pago</button>
+        <!-- Se elimina el campo de dirección porque en el sorteo gratis no se solicita -->
+        <button type="submit">Validar Participación</button>
       </form>
 
       <h2>Declarar Ganador</h2>
@@ -69,7 +69,7 @@
 
       <div id="winner-info" aria-label="Información del ganador"></div>
 
-      <h2>Resetear Rifa</h2>
+      <h2>Resetear Sorteo</h2>
       <button id="reset-raffle">Resetear para Nuevo Sorteo</button>
 
       <h2>Ver Datos Recopilados</h2>

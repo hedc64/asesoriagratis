@@ -67,12 +67,12 @@ router.post('/configure-sorteo', authMiddleware, (req, res) => {
   );
 });
 
-// ✅ Validar pago individual
+// ✅ Validar participación individual (modificado para sorteo gratis)
 router.post('/validate', authMiddleware, (req, res) => {
-  const { number, buyer_name, buyer_phone, buyer_id, buyer_address } = req.body;
+  const { number, buyer_name, buyer_phone, buyer_id } = req.body;
 
   if (!number || !buyer_name || !buyer_phone || !buyer_id) {
-    return res.status(400).json({ error: 'Faltan datos obligatorios del comprador' });
+    return res.status(400).json({ error: 'Faltan datos obligatorios del participante' });
   }
 
   db.run(
@@ -81,15 +81,13 @@ router.post('/validate', authMiddleware, (req, res) => {
       validated_at = ?, 
       buyer_name = ?, 
       buyer_phone = ?, 
-      buyer_id = ?, 
-      buyer_address = ?
+      buyer_id = ?
      WHERE number = ? AND status = 'seleccionado'`,
     [
       new Date().toISOString(),
       buyer_name,
       buyer_phone,
       buyer_id,
-      buyer_address || '',
       number
     ],
     function (err) {
@@ -97,21 +95,21 @@ router.post('/validate', authMiddleware, (req, res) => {
       if (this.changes === 0) {
         return res.status(400).json({ error: 'Número no encontrado o no está en estado seleccionado' });
       }
-      res.json({ message: `Número ${number} validado correctamente` });
+      res.json({ message: `Participación ${number} validada correctamente` });
     }
   );
 });
 
-// ✅ Validar múltiples pagos
+// ✅ Validar múltiples participaciones (mantenida para compatibilidad)
 router.post('/validate-multiple', authMiddleware, (req, res) => {
-  const { numbers, buyer_name, buyer_phone, buyer_id, buyer_address } = req.body;
+  const { numbers, buyer_name, buyer_phone, buyer_id } = req.body;
 
   if (!Array.isArray(numbers) || numbers.length === 0) {
     return res.status(400).json({ error: 'Debe seleccionar al menos un número' });
   }
 
   if (!buyer_name || !buyer_phone || !buyer_id) {
-    return res.status(400).json({ error: 'Faltan datos del comprador para validación múltiple' });
+    return res.status(400).json({ error: 'Faltan datos del participante para validación múltiple' });
   }
 
   const validatedAt = new Date().toISOString();
@@ -136,14 +134,13 @@ router.post('/validate-multiple', authMiddleware, (req, res) => {
           validated_at = ?, 
           buyer_name = ?, 
           buyer_phone = ?, 
-          buyer_id = ?, 
-          buyer_address = ?
+          buyer_id = ?
          WHERE number = ?`
       );
 
       let hasError = false;
       numbers.forEach(num => {
-        stmt.run(validatedAt, buyer_name, buyer_phone, buyer_id, buyer_address || '', num, (err) => {
+        stmt.run(validatedAt, buyer_name, buyer_phone, buyer_id, num, (err) => {
           if (err) {
             console.error(`❌ Error al validar número ${num}:`, err.message);
             hasError = true;
@@ -155,7 +152,7 @@ router.post('/validate-multiple', authMiddleware, (req, res) => {
         if (err || hasError) {
           return res.status(500).json({ error: 'Error al validar los números' });
         }
-        res.json({ message: `${numbers.length} números validados correctamente` });
+        res.json({ message: `${numbers.length} participaciones validadas correctamente` });
       });
     }
   );
@@ -179,7 +176,7 @@ router.post('/winner', authMiddleware, (req, res) => {
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       if (this.changes === 0) {
-        return res.status(400).json({ error: 'Número no encontrado o no está comprado' });
+        return res.status(400).json({ error: 'Número no encontrado o no está validado' });
       }
 
       db.get("SELECT * FROM numbers WHERE number = ?", [number], (err, row) => {
@@ -190,7 +187,7 @@ router.post('/winner', authMiddleware, (req, res) => {
   );
 });
 
-// 🔄 Resetear rifa
+// 🔄 Resetear rifa (actualizado para incluir device_id)
 router.post('/reset', authMiddleware, (req, res) => {
   db.run(
     `UPDATE numbers SET 
@@ -202,7 +199,8 @@ router.post('/reset', authMiddleware, (req, res) => {
       buyer_address = NULL,
       validated_at = NULL,
       winner_name = NULL,
-      draw_date = NULL`,
+      draw_date = NULL,
+      device_id = NULL`,
     (err) => {
       if (err) return res.status(500).json({ error: err.message });
 

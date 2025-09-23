@@ -63,6 +63,11 @@ h1 {
   color: white;
 }
 
+.instructions-box {
+  background-color: var(--color-blue);
+  color: white;
+}
+
 /* Grilla de números */
 .grid {
   display: grid;
