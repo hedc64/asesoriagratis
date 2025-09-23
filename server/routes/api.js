@@ -1,83 +1,79 @@
 // server/routes/api.js
-// 🛒 Seleccionar número (modificado para un solo número y deviceId)
+const express = require('express'); // <-- FALTABA ESTA LÍNEA
+const router = express.Router();     // <-- FALTABA ESTA LÍNEA
+const db = require('../db');
+
+// Obtener fecha del sorteo
+router.get('/sorteo-date', (req, res) => {
+  db.get("SELECT value FROM config WHERE key = 'sorteo_date'", (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ date: row ? row.value : null });
+  });
+});
+
+// Verificar si hay ganador
+router.get('/has-winner', (req, res) => {
+  db.get("SELECT * FROM numbers WHERE status = 'ganador'", (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ hasWinner: !!row });
+  });
+});
+
+// Obtener todos los números
+router.get('/numbers', (req, res) => {
+  db.all("SELECT * FROM numbers ORDER BY number", (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
+// Seleccionar un número (participación gratuita)
 router.post('/select', (req, res) => {
-  console.log('📥 Petición de selección recibida:', req.body);
   const { number, buyerName, buyerPhone, buyerId, deviceId } = req.body;
 
-  // Validar datos de entrada
   if (!number || !buyerName || !buyerPhone || !buyerId || !deviceId) {
-    console.error('❌ Datos incompletos:', { number, buyerName, buyerPhone, buyerId, deviceId });
-    return res.status(400).json({ error: 'Datos incompletos para la selección' });
+    return res.status(400).json({ error: 'Faltan datos obligatorios' });
   }
 
-  // Verificar si el dispositivo ya participó (cualquier estado)
-  db.get(
-    "SELECT buyer_id FROM numbers WHERE device_id = ? AND status IN ('seleccionado', 'comprado', 'ganador') LIMIT 1",
-    [deviceId],
-    (err, row) => {
-      if (err) {
-        console.error('❌ Error al verificar dispositivo:', err.message);
-        return res.status(500).json({ error: err.message });
+  // Verificar si el dispositivo ya participó
+  db.get("SELECT * FROM numbers WHERE device_id = ?", [deviceId], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (row) {
+      return res.status(400).json({ error: 'Este dispositivo ya ha participado en el sorteo' });
+    }
+
+    // Verificar si el número está disponible
+    db.get("SELECT * FROM numbers WHERE number = ? AND status = 'disponible'", [number], (err, row) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (!row) {
+        return res.status(400).json({ error: 'Número no disponible' });
       }
 
-      if (row) {
-        console.log(`❌ Dispositivo ${deviceId} ya participó (comprador: ${row.buyer_id})`);
-        return res.status(400).json({
-          error: 'Este dispositivo ya ha participado en el sorteo'
-        });
-      }
-
-      // Verificar si el número está disponible
-      db.get(
-        "SELECT number FROM numbers WHERE number = ? AND status = 'disponible' LIMIT 1",
-        [number],
-        (err, row) => {
-          if (err) {
-            console.error('❌ Error al verificar disponibilidad:', err.message);
-            return res.status(500).json({ error: err.message });
-          }
-
-          if (!row) {
-            console.log(`❌ Número ${number} no disponible`);
-            return res.status(400).json({
-              error: `El número ${number} no está disponible`
-            });
-          }
-
-          // Actualizar el número como seleccionado
-          const selectedAt = new Date().toISOString();
-          db.run(
-            `UPDATE numbers SET 
-              status = 'seleccionado', 
-              selected_at = ?, 
-              buyer_name = ?, 
-              buyer_phone = ?, 
-              buyer_id = ?,
-              device_id = ?
-             WHERE number = ?`,
-            [selectedAt, buyerName, buyerPhone, buyerId, deviceId, number],
-            function(err) {
-              if (err) {
-                console.error(`❌ Error al actualizar número ${number}:`, err.message);
-                return res.status(500).json({ error: 'Error al seleccionar el número' });
-              }
-
-              if (this.changes === 0) {
-                console.log(`❌ No se pudo actualizar el número ${number} (posiblemente fue tomado por otro)`);
-                return res.status(400).json({
-                  error: `No se pudo seleccionar el número ${number}`
-                });
-              }
-
-              console.log(`✅ Número ${number} seleccionado correctamente`);
-              res.json({
-                message: 'Participación registrada correctamente',
-                selected: number
-              });
-            }
-          );
+      // Registrar la participación
+      db.run(
+        `UPDATE numbers SET 
+          status = 'seleccionado', 
+          selected_at = ?, 
+          buyer_name = ?, 
+          buyer_phone = ?, 
+          buyer_id = ?,
+          device_id = ?
+         WHERE number = ?`,
+        [
+          new Date().toISOString(),
+          buyerName,
+          buyerPhone,
+          buyerId,
+          deviceId,
+          number
+        ],
+        function (err) {
+          if (err) return res.status(500).json({ error: err.message });
+          res.json({ message: 'Participación registrada correctamente' });
         }
       );
-    }
-  );
+    });
+  });
 });
+
+module.exports = router; // <-- ASEGÚRATE DE EXPORTAR EL ROUTER
