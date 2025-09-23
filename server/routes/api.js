@@ -6,12 +6,13 @@ router.post('/select', (req, res) => {
 
   // Validar datos de entrada
   if (!number || !buyerName || !buyerPhone || !buyerId || !deviceId) {
+    console.error('❌ Datos incompletos:', { number, buyerName, buyerPhone, buyerId, deviceId });
     return res.status(400).json({ error: 'Datos incompletos para la selección' });
   }
 
-  // Verificar si el dispositivo ya participó
+  // Verificar si el dispositivo ya participó (cualquier estado)
   db.get(
-    "SELECT buyer_id FROM numbers WHERE device_id = ? AND status = 'seleccionado' LIMIT 1",
+    "SELECT buyer_id FROM numbers WHERE device_id = ? AND status IN ('seleccionado', 'comprado', 'ganador') LIMIT 1",
     [deviceId],
     (err, row) => {
       if (err) {
@@ -20,6 +21,7 @@ router.post('/select', (req, res) => {
       }
 
       if (row) {
+        console.log(`❌ Dispositivo ${deviceId} ya participó (comprador: ${row.buyer_id})`);
         return res.status(400).json({
           error: 'Este dispositivo ya ha participado en el sorteo'
         });
@@ -36,6 +38,7 @@ router.post('/select', (req, res) => {
           }
 
           if (!row) {
+            console.log(`❌ Número ${number} no disponible`);
             return res.status(400).json({
               error: `El número ${number} no está disponible`
             });
@@ -60,6 +63,7 @@ router.post('/select', (req, res) => {
               }
 
               if (this.changes === 0) {
+                console.log(`❌ No se pudo actualizar el número ${number} (posiblemente fue tomado por otro)`);
                 return res.status(400).json({
                   error: `No se pudo seleccionar el número ${number}`
                 });
