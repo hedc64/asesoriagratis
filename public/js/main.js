@@ -175,16 +175,18 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.ok ? res.json() : Promise.reject('Error al seleccionar número'))
       .then(data => {
         if (data.message) {
+          const numeroConfirmado = selectedNumber; // ✅ Guardar antes de limpiar
+
           // Mostrar mensaje de éxito
           successNumber.textContent = selectedNumber;
           confirmation.style.display = 'none';
           successInfo.style.display = 'block';
           
           // Limpiar selección
-          selectedNumber = null;
-          acceptTermsCheckbox.checked = false;
-          confirmButton.disabled = true;
-          loadNumbers();
+       //   selectedNumber = null;
+       //   acceptTermsCheckbox.checked = false;
+       //   confirmButton.disabled = true;
+       //   loadNumbers();
 
 
            // ✅ Enviar notificación por Telegram
@@ -192,7 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-          mensaje: `🎉 Confirmación recibida: ${buyerName} (${buyerPhone}) seleccionó el número ${data.number || selectedNumber}.`
+        //  mensaje: `🎉 Confirmación recibida: ${buyerName} (${buyerPhone}) seleccionó el número ${data.number || selectedNumber}.`
+          mensaje: `🎉 Confirmación recibida: ${buyerName} (${buyerPhone}) seleccionó el número ${numeroConfirmado}.`
             })
           })
           .then(res => {
@@ -203,6 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
           .catch(err => {
             console.error('Error de red al enviar a Telegram:', err);
           });
+
+          // Limpiar selección
+          selectedNumber = null;
+          acceptTermsCheckbox.checked = false;
+          confirmButton.disabled = true;
+          loadNumbers();
+
   
   
         } else {
