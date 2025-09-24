@@ -327,3 +327,25 @@ input[type="checkbox"]:focus {
   color: #856404;
   margin-bottom: 10px;
 }
+
+/* Otros textos */
+.text-whatsapp {
+  color:#088504;
+  }
+
+.text-email {
+  color:#110485;
+  } 
+
+ .whatsapp-link {
+  color: #088504;
+  text-decoration: none; /* Opcional: quita el subrayado */
+  font-weight: bold;     /* Opcional: resalta el número */
+}
+
+.correo-link {
+  color: #110485;
+  text-decoration: none; /* Opcional: quita el subrayado */
+  font-weight: bold;     /* Opcional: resalta el correo */
+}
+ 
