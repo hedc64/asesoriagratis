@@ -68,6 +68,35 @@
     </div>
   </div>
 
+<!-- notificacion a telegram confirmacion seleccion -->
+<script>
+  // const checkbox = document.getElementById("accept-terms");
+  const button = document.getElementById("confirm-selection");
+
+  // Habilitar el botón cuando se marque la casilla
+  checkbox.addEventListener("change", () => {
+    button.disabled = !checkbox.checked;
+  });
+
+  // Enviar notificación por Telegram al hacer clic
+  button.addEventListener("click", () => {
+    const token = "7714708204:AAExDfStPvl1FXQ75kJEgttU5Atj7qe2YeY";   // Reemplaza con el token real
+    const chatId = "5119357424";    // Reemplaza con tu chat ID
+    const mensaje = "✅ Un usuario confirmó su participación en la rifa.";
+
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: mensaje
+      })
+    });
+  });
+</script>
+
   <script src="js/main.js"></script>
 </body>
 </html>
