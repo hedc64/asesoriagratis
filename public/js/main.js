@@ -185,6 +185,26 @@ document.addEventListener('DOMContentLoaded', () => {
           acceptTermsCheckbox.checked = false;
           confirmButton.disabled = true;
           loadNumbers();
+
+
+           // ✅ Enviar notificación por Telegram
+          fetch('/send-telegram', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+          mensaje: `🎉 Confirmación recibida: ${buyerName} (${buyerPhone}) seleccionó el número ${data.number || selectedNumber}.`
+            })
+          })
+          .then(res => {
+          if (!res.ok) {
+            console.error('Error al enviar notificación a Telegram:', res.status);
+            }
+          })
+          .catch(err => {
+            console.error('Error de red al enviar a Telegram:', err);
+          });
+  
+  
         } else {
           alert(data.error || 'Error al seleccionar número');
         }
