@@ -21,6 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('deviceId', deviceId);
   }
 
+  // 🔍 Verificar si el dispositivo ya participó
+  fetch(`/api/participacion?deviceId=${deviceId}`)
+    .then(res => res.ok ? res.json() : Promise.reject('Error al verificar participación'))
+    .then(data => {
+      if (data.participated) {
+        // Mostrar estado de participación
+        successNumber.textContent = data.number;
+        successInfo.style.display = 'block';
+        confirmation.style.display = 'none';
+        acceptTermsCheckbox.checked = true;
+        confirmButton.disabled = true;
+      }
+    })
+    .catch(err => console.error('❌ Error al verificar participación:', err));
+
   // 📅 Cargar fecha del sorteo
   function loadSorteoDate() {
     fetch('/api/sorteo-date')
@@ -183,10 +198,10 @@ document.addEventListener('DOMContentLoaded', () => {
           successInfo.style.display = 'block';
           
           // Limpiar selección
-       //   selectedNumber = null;
-       //   acceptTermsCheckbox.checked = false;
-       //   confirmButton.disabled = true;
-       //   loadNumbers();
+          selectedNumber = null;
+          acceptTermsCheckbox.checked = false;
+          confirmButton.disabled = true;
+          loadNumbers();
 
 
            // ✅ Enviar notificación por Telegram
@@ -208,13 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
           // Limpiar selección
-          selectedNumber = null;
-          acceptTermsCheckbox.checked = false;
-          confirmButton.disabled = true;
-          loadNumbers();
+      //    selectedNumber = null;
+      //    acceptTermsCheckbox.checked = false;
+      //    confirmButton.disabled = true;
+      //    loadNumbers();
 
-  
-  
         } else {
           alert(data.error || 'Error al seleccionar número');
         }

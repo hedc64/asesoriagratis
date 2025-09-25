@@ -78,4 +78,36 @@ router.post('/select', (req, res) => {
   });
 });
 
+// 🔍 Verificar si un dispositivo ya participó
+router.get('/participacion', (req, res) => {
+  const deviceId = req.query.deviceId;
+
+  if (!deviceId) {
+    return res.status(400).json({ error: 'Falta el parámetro deviceId' });
+  }
+
+  db.get(
+    `SELECT number, buyer_name, buyer_phone, selected_at FROM numbers WHERE device_id = ?`,
+    [deviceId],
+    (err, row) => {
+      if (err) {
+        console.error('❌ Error al consultar participación:', err.message);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+      }
+
+      if (row) {
+        res.json({
+          participated: true,
+          number: row.number,
+          buyerName: row.buyer_name,
+          buyerPhone: row.buyer_phone,
+          selectedAt: row.selected_at
+        });
+      } else {
+        res.json({ participated: false });
+      }
+    }
+  );
+});
+
 module.exports = router; // <-- ASEGÚRATE DE EXPORTAR EL ROUTER
