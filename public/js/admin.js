@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adminPanel.style.display = 'block';
     loadCurrentSorteoDate();
 
-    fetchWithAuth('/admin/numbers')
+    fetchWithAuth('/api/admin/numbers')
       .then(res => res.ok ? res.json() : Promise.reject('Error al cargar números'))
       .then(numbers => {
         numbersList.innerHTML = '';
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const sorteoDate = document.getElementById('sorteo-date').value;
 
-      fetchWithAuth('/admin/configure-sorteo', {
+      fetchWithAuth('/api/admin/configure-sorteo', {
         method: 'POST',
         body: JSON.stringify({ sorteoDate })
       })
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buyer_address: document.getElementById('validate-address').value
       };
 
-      fetchWithAuth('/admin/validate', {
+      fetchWithAuth('/api/admin/validate', {
         method: 'POST',
         body: JSON.stringify(data)
       })
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         draw_date: document.getElementById('winner-date').value
       };
 
-      fetchWithAuth('/admin/winner', {
+      fetchWithAuth('/api/admin/winner', {
         method: 'POST',
         body: JSON.stringify(data)
       })
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      fetchWithAuth('/admin/validate-multiple', {
+      fetchWithAuth('/api/admin/validate-multiple', {
         method: 'POST',
         body: JSON.stringify({
           numbers,
@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (resetButton) {
     resetButton.addEventListener('click', () => {
       if (confirm('¿Estás seguro de resetear la rifa? Esto eliminará todos los datos actuales.')) {
-        fetchWithAuth('/admin/reset', {
+        fetchWithAuth('/api/admin/reset', {
           method: 'POST'
         })
           .then(res => res.ok ? res.json() : Promise.reject('Error al resetear la rifa'))
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (viewDataButton) {
     viewDataButton.addEventListener('click', () => {
-      fetchWithAuth('/admin/view-data')
+      fetchWithAuth('/api/admin/view-data')
         .then(res => res.ok ? res.json() : Promise.reject('Error al obtener datos'))
         .then(data => {
           if (!Array.isArray(data) || data.length === 0) {
