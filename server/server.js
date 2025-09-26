@@ -7,6 +7,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const path = require('path');
+
+// Servir archivos estáticos desde /public
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Ruta raíz para servir index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
 // Rutas API
 app.use('/api/numbers', require('./routes/numbers'));
 app.use('/api/select', require('./routes/select'));

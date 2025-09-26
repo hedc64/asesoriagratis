@@ -222,12 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error de red al enviar a Telegram:', err);
           });
 
-          // Limpiar selección
-      //    selectedNumber = null;
-      //    acceptTermsCheckbox.checked = false;
-      //    confirmButton.disabled = true;
-      //    loadNumbers();
-
+      
         } else {
           alert(data.error || 'Error al seleccionar número');
         }
