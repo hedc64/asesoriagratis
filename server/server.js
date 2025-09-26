@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 const path = require('path');
 
 // Servir archivos estáticos desde /public
@@ -18,12 +19,13 @@ app.get('/', (req, res) => {
 });
 
 // Rutas API
+app.use('/admin', require('./routes/admin'));
 app.use('/api/numbers', require('./routes/numbers'));
 app.use('/api/select', require('./routes/select'));
 app.use('/api/participacion', require('./routes/participacion'));
 app.use('/send-telegram', require('./routes/sendTelegram'));
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Backend corriendo en puerto ${PORT}`);
 });
