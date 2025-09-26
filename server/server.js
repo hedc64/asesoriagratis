@@ -24,6 +24,8 @@ app.use('/api/numbers', require('./routes/numbers'));
 app.use('/api/select', require('./routes/select'));
 app.use('/api/participacion', require('./routes/participacion'));
 app.use('/send-telegram', require('./routes/sendTelegram'));
+app.use('/api/sorteo-date', require('./routes/sorteoDate'));
+app.use('/api/has-winner', require('./routes/hasWinner'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
