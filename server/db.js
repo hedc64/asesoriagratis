@@ -1,8 +1,21 @@
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+module.exports = pool;
+
+
+
+/*
 // server/db.js
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 const ensureSchema = require('./ensureSchema');
+const { Pool } = require('pg');
 
 // Ruta al archivo de la base de datos
 const dbPath = path.resolve(__dirname, '../rifa.db');
@@ -92,7 +105,16 @@ function populateNumbers() {
   });
 }
 
-module.exports = db;
+
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false } // necesario para Railway
+});
+
+module.exports = pool;
+
+//module.exports = db;
 
 
 

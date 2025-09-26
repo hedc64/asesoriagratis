@@ -1,4 +1,27 @@
 //server/server.js
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Rutas API
+app.use('/api/numbers', require('./routes/numbers'));
+app.use('/api/select', require('./routes/select'));
+app.use('/api/participacion', require('./routes/participacion'));
+app.use('/send-telegram', require('./routes/sendTelegram'));
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`🚀 Backend corriendo en puerto ${PORT}`);
+});
+
+
+
+
+/*
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -9,6 +32,7 @@ const db = require('./db');
 const ensureSchema = require('./ensureSchema');
 const apiRoutes = require('./routes/api');
 const adminRoutes = require('./routes/admin');
+
 
 const app = express();
 app.use(bodyParser.json());
