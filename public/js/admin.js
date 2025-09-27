@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const payload = JSON.parse(atob(currentToken.split('.')[1]));
       const expiryTime = payload.exp * 1000;
       const currentTime = Date.now();
-      return expiryTime - currentTime > 600000;
+      return expiryTime > currentTime;
     } catch (e) {
       localStorage.removeItem('adminToken');
       return false;
