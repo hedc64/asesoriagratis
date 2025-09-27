@@ -370,5 +370,99 @@ a:hover {
   line-height: 30px;
 }
 
+/* Párrafo con enlace en la sección de éxito */
+.state-paragraph {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.state-paragraph a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px dashed #1976d2;
+  padding-bottom: 2px;
+  transition: all 0.3s ease;
+}
+
+.state-paragraph a:hover {
+  color: #0d47a1;
+  border-bottom-color: #0d47a1;
+}
+
+/* Recordatorio permanente */
+.state-reminder {
+  text-align: center;
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #e3f2fd;
+  border-radius: 10px;
+  border: 1px solid #90caf9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.state-reminder p {
+  margin: 0;
+  color: #0d47a1;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.state-reminder a {
+  color: #0d47a1;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.state-reminder a::after {
+  content: "→";
+  margin-left: 5px;
+  font-weight: normal;
+  opacity: 0.8;
+}
+
+.state-reminder a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo mejorado para la caja de éxito */
+.success-box {
+  position: relative;
+  padding: 25px;
+  margin: 20px 0;
+  background-color: #e8f5e9;
+  border-radius: 10px;
+  border: 1px solid #c8e6c9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.success-box h3 {
+  color: #2e7d32;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.success-box p {
+  margin-bottom: 15px;
+  color: #1b5e20;
+}
+
+.success-details {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #c8e6c9;
+}
+
+.success-details p {
+  margin: 5px 0;
+  color: #333;
+}
 
 

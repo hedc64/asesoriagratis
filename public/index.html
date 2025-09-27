@@ -30,6 +30,15 @@
 
     <div id="numbers-grid" class="grid"></div>
 
+    <!-- Recordatorio permanente para consultar estado -->
+    <div class="state-reminder">
+      <div class="reminder-icon">📊</div>
+      <p>
+        Consulta en cualquier momento el estado del sorteo y los números disponibles en 
+        <a href="estado.html" target="_blank">esta página</a>.
+      </p>
+    </div>
+
     <div id="selection-info" style="display: none;" class="selection-container">
       <h2>Número Seleccionado</h2>
       <div class="selected-number" id="selected-number"></div>
@@ -59,7 +68,13 @@
         <h3>¡Participación Registrada!</h3>
         <p>Tu número ha sido registrado exitosamente. ¡Mucha suerte!</p>
         <p>Te contactaremos si resultas ganador.</p>
-        <label for="accept-terms">Consulta el <a href="estado.html" target="_blank">estado</a> del sorteo</label>
+        
+        <!-- Párrafo con enlace a estado.html -->
+        <p class="state-paragraph">
+          Puedes consultar el estado actual del sorteo y verificar los números disponibles en 
+          <a href="estado.html" target="_blank">esta página</a>.
+        </p>
+        
         <div class="success-details">
           <p><strong>Número seleccionado:</strong> <span id="success-number"></span></p>
           <p><strong>Fecha del sorteo:</strong> <span id="success-date"></span></p>
@@ -69,8 +84,27 @@
   </div>
 
   <script src="js/main.js"></script>
+
+<!-- notificacion a telegram confirmacion seleccion -->
+<script>
+  const checkbox = document.getElementById("accept-terms");
+  const button = document.getElementById("confirm-selection");
+
+  checkbox.addEventListener("change", () => {
+    button.disabled = !checkbox.checked;
+  });
+
+  button.addEventListener("click", () => {
+    console.log("Botón clickeado, enviando a Telegram..."); // 👈 Verifica en consola
+    fetch("/api/send-telegram", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mensaje: "✅ Un usuario confirmó su participación desde la app web."
+      })
+    });
+  });
+</script>
+
 </body>
 </html>
-
-
-
