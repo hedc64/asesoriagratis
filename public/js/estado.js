@@ -1,3 +1,4 @@
+//public/js/estado.js
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('numbers-grid');
 

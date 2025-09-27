@@ -465,4 +465,155 @@ a:hover {
   color: #333;
 }
 
+/* Estilos generales para la grilla de números */
+#numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr); /* 10 columnas en desktop */
+  gap: 10px;
+  margin: 20px 0;
+}
 
+/* Para tablets - 5 columnas */
+@media (max-width: 768px) {
+  #numbers-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Para móviles - 4 columnas */
+@media (max-width: 480px) {
+  #numbers-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Para móviles pequeños - 3 columnas */
+@media (max-width: 360px) {
+  #numbers-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Estilo base para cada número */
+.number {
+  aspect-ratio: 1; /* Mantener los cuadrados */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 50px;
+}
+
+/* Ajustar tamaño de fuente en móviles */
+@media (max-width: 480px) {
+  .number {
+    font-size: 1rem;
+    min-height: 45px;
+  }
+}
+
+@media (max-width: 360px) {
+  .number {
+    font-size: 0.9rem;
+    min-height: 40px;
+  }
+}
+
+/* Estilos para la página de estado */
+
+/* Grilla de números */
+#numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+  margin: 20px 0;
+}
+
+/* Para tablets */
+@media (max-width: 768px) {
+  #numbers-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Para móviles */
+@media (max-width: 480px) {
+  #numbers-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Números en estado.html */
+.estado-number {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 5px;
+  margin: 2px;
+  font-weight: bold;
+}
+
+.estado-number.disponible {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.estado-number.seleccionado {
+  background-color: #ff9800;
+  color: white;
+  border: 1px solid #f57c00;
+}
+
+.estado-number.validado {
+  background-color: #f44336;
+  color: white;
+  border: 1px solid #d32f2f;
+}
+
+.estado-number.ganador {
+  background-color: #4caf50;
+  color: white;
+  border: 1px solid #388e3c;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Info boxes */
+.info-box {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.premio-box {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  border: 1px solid #bbdefb;
+}
+
+.sorteo-box {
+  background-color: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffcc80;
+}
+
+.valor-box {
+  background-color: #f3e5f5;
+  color: #4a148c;
+  border: 1px solid #ce93d8;
+}
