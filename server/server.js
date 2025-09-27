@@ -24,33 +24,13 @@ app.get('/admin', (req, res) => {
 });
 
 // Rutas API
-// Rutas
-const apiRoutes = require('./routes/api');
-const adminRoutes = require('./routes/admin');
-const hasWinnerRouter = require('./routes/hasWinner');
-const numbersRouter = require('./routes/numbers');
-const participacionRouter = require('./routes/participacion');
-const selectRouter = require('./routes/select');
-const sendTelegramRouter = require('./routes/sendTelegram');
-const sorteoDateRouter = require('./routes/sorteoDate'); // Importar la ruta
-
-app.use('/api', apiRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/has-winner', hasWinnerRouter);
-app.use('/api/numbers', numbersRouter);
-app.use('/api/participacion', participacionRouter);
-app.use('/api/select', selectRouter);
-app.use('/api/send-telegram', sendTelegramRouter);
-app.use('/api/sorteo-date', sorteoDateRouter); // Montar la ruta
-
-
-//app.use('/api/admin', require('./routes/admin'));
-//app.use('/api/numbers', require('./routes/numbers'));
-//app.use('/api/select', require('./routes/select'));
-//app.use('/api/participacion', require('./routes/participacion'));
-//app.use('/api/send-telegram', require('./routes/sendTelegram'));
-//app.use('/api/sorteo-date', require('./routes/sorteoDate'));
-//app.use('/api/has-winner', require('./routes/hasWinner'));
+app.use('/api/admin', require('./routes/admin'));
+app.use('/api/numbers', require('./routes/numbers'));
+app.use('/api/select', require('./routes/select'));
+app.use('/api/participacion', require('./routes/participacion'));
+app.use('/api/send-telegram', require('./routes/sendTelegram'));
+app.use('/api/sorteo-date', require('./routes/sorteoDate'));
+app.use('/api/has-winner', require('./routes/hasWinner'));
 
 
 const PORT = process.env.PORT || 3000;
