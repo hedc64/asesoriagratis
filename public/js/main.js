@@ -183,91 +183,96 @@ function loadNumbers() {
   });
 
   // 📤 Confirmar selección
-  confirmButton.addEventListener('click', async () => {
-    if (!acceptTermsCheckbox.checked) {
-      alert('Debes aceptar los términos y condiciones para continuar');
-      return;
-    }
+  // Reemplazar la función completa del botón de confirmación
+confirmButton.addEventListener('click', async () => {
+  if (!acceptTermsCheckbox.checked) {
+    alert('Debes aceptar los términos y condiciones para continuar');
+    return;
+  }
 
-    // 🔒 Verificar nuevamente si ya ha participado
-    if (hasParticipated) {
-      alert('Ya has participado en este sorteo');
-      return;
-    }
+  // 🔒 Verificar nuevamente si ya ha participado
+  if (hasParticipated) {
+    alert('Ya has participado en este sorteo');
+    return;
+  }
 
-    const buyerName = prompt('Nombre completo:');
-    const buyerPhone = prompt('Teléfono:');
-    const buyerId = prompt('Cédula:');
-    const buyerAddress = prompt('Direccion:');
+  const buyerName = prompt('Nombre completo:');
+  const buyerPhone = prompt('Teléfono:');
+  const buyerId = prompt('Cédula:');
+  const buyerAddress = prompt('Direccion:');
 
-    if (!buyerName || !buyerPhone || !buyerId || !buyerAddress) {
-      alert('Debe ingresar todos los datos');
-      return;
-    }
+  if (!buyerName || !buyerPhone || !buyerId || !buyerAddress) {
+    alert('Debe ingresar todos los datos');
+    return;
+  }
 
-    try {
-      // Enviar selección con ID del dispositivo
-      const response = await fetch('/api/select', {
+  try {
+    // Enviar selección con ID del dispositivo
+    const response = await fetch('/api/select', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        number: selectedNumber,
+        buyerName,
+        buyerPhone,
+        buyerId,
+        buyerAddress,  
+        deviceId
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      // 🔑 GUARDAR EL NÚMERO ANTES DE RESTABLECERLO
+      const numeroConfirmado = selectedNumber;
+      
+      // Marcar que ha participado
+      hasParticipated = true;
+      
+      // Mostrar mensaje de éxito
+      successNumber.textContent = selectedNumber;
+      confirmation.style.display = 'none';
+      successInfo.style.display = 'block';
+      
+      // Limpiar selección
+      selectedNumber = null;
+      acceptTermsCheckbox.checked = false;
+      confirmButton.disabled = true;
+      
+      // 🔒 Deshabilitar todos los números
+      disableAllNumbers();
+      
+      // Recargar números para actualizar estados
+      loadNumbers();
+
+      // ✅ Enviar notificación por Telegram con el número guardado
+      fetch('/api/send-telegram', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          number: selectedNumber,
-          buyerName,
-          buyerPhone,
-          buyerId,
-          buyerAddress,  
-          deviceId
+          mensaje: `🎉 Confirmación recibida: ${buyerName} (${buyerPhone}) seleccionó el número ${numeroConfirmado}.`
         })
+      })
+      .then(res => {
+        if (!res.ok) {
+          console.error('Error al enviar notificación a Telegram:', res.status);
+        } else {
+          console.log('✅ Notificación enviada a Telegram correctamente');
+        }
+      })
+      .catch(err => {
+        console.error('Error de red al enviar a Telegram:', err);
       });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Marcar que ha participado
-        hasParticipated = true;
-        
-        // Mostrar mensaje de éxito
-        successNumber.textContent = selectedNumber;
-        confirmation.style.display = 'none';
-        successInfo.style.display = 'block';
-        
-        // Limpiar selección
-        selectedNumber = null;
-        acceptTermsCheckbox.checked = false;
-        confirmButton.disabled = true;
-        
-        // 🔒 Deshabilitar todos los números
-        disableAllNumbers();
-        
-        // Recargar números para actualizar estados
-        loadNumbers();
-
-        // ✅ Enviar notificación por Telegram
-        fetch('/api/send-telegram', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            mensaje: `🎉 Confirmación recibida: ${buyerName} (${buyerPhone}) seleccionó el número ${selectedNumber}.`
-          })
-        })
-        .then(res => {
-          if (!res.ok) {
-            console.error('Error al enviar notificación a Telegram:', res.status);
-          }
-        })
-        .catch(err => {
-          console.error('Error de red al enviar a Telegram:', err);
-        });
-      } else {
-        alert(data.error || 'Error al seleccionar número');
-      }
-    } catch (err) {
-      console.error('Error al enviar selección:', err);
-      alert('Error al seleccionar número. Por favor intenta nuevamente.');
+    } else {
+      alert(data.error || 'Error al seleccionar número');
     }
+  } catch (err) {
+    console.error('Error al enviar selección:', err);
+    alert('Error al seleccionar número. Por favor intenta nuevamente.');
+  }
   });
 });
-
 
 
 
