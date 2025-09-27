@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 // Rutas API
-app.use('/admin', require('./routes/admin'));
+app.use('/api/admin', require('./routes/admin'));
 app.use('/api/numbers', require('./routes/numbers'));
 app.use('/api/select', require('./routes/select'));
 app.use('/api/participacion', require('./routes/participacion'));

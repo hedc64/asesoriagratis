@@ -8,7 +8,7 @@ const verifyToken = require('../middleware/auth');
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  if (username === 'admin' && password === '1234') {
+  if (username === 'admin' && password === 'admin123') {
     const token = jwt.sign(
       { id: 'admin', username },
       process.env.JWT_SECRET,
