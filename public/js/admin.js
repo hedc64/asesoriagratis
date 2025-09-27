@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    fetch('/admin/login', {
+    fetch('/api/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
