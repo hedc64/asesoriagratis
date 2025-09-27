@@ -1,0 +1,314 @@
+/* Estilos específicos para la página de términos y condiciones */
+
+/* Contenedor principal */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* Encabezado de página */
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px 0;
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.page-header .subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Contenedor de términos */
+.terminos-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Encabezado de términos */
+.terminos-header {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 30px;
+  text-align: center;
+  position: relative;
+}
+
+.terminos-header .header-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  opacity: 0.9;
+}
+
+.terminos-header h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.terminos-header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.terminos-header .update-date {
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+/* Contenido de términos */
+.terminos-content {
+  padding: 40px;
+}
+
+/* Secciones de términos */
+.terminos-section {
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.terminos-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin: 0;
+  flex: 1;
+}
+
+.section-header .section-icon {
+  width: 40px;
+  height: 40px;
+  background: #3498db;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+/* Listas */
+.terminos-section ul {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+.terminos-section li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 10px;
+}
+
+.terminos-section li::before {
+  content: "•";
+  color: #3498db;
+  font-weight: bold;
+  position: absolute;
+  left: -15px;
+}
+
+/* Párrafos */
+.terminos-section p {
+  margin-bottom: 15px;
+  line-height: 1.8;
+  text-align: justify;
+  color: #333;
+}
+
+/* Resaltado importante */
+.highlight-box {
+  background: #fff8e1;
+  border-left: 5px solid #ffc107;
+  padding: 25px;
+  border-radius: 8px;
+  margin: 30px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.highlight-box .highlight-icon {
+  color: #ffc107;
+  font-size: 1.5rem;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.highlight-box .highlight-content {
+  flex: 1;
+}
+
+.highlight-box h4 {
+  color: #e65100;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.highlight-box p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Footer de términos */
+.terminos-footer {
+  background: #f8f9fa;
+  padding: 30px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.terminos-footer .footer-content {
+  flex: 1;
+}
+
+.terminos-footer p {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* Botón de volver */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  background: #3498db;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+}
+
+.back-button:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+}
+
+.back-button i {
+  margin-right: 8px;
+}
+
+/* Enlaces */
+.contact-link {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+/* Iconos (usando clases genéricas para no depender de una librería) */
+.icon-gavel::before { content: "⚖️"; }
+.icon-target::before { content: "🎯"; }
+.icon-gift::before { content: "🎁"; }
+.icon-shield::before { content: "🛡️"; }
+.icon-random::before { content: "🎲"; }
+.icon-lock::before { content: "🔒"; }
+.icon-refresh::before { content: "🔄"; }
+.icon-check::before { content: "✅"; }
+.icon-alert::before { content: "⚠️"; }
+.icon-arrow-left::before { content: "←"; }
+
+/* Diseño responsivo */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .page-header {
+    padding: 20px;
+  }
+  
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .terminos-content {
+    padding: 25px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .section-header .section-icon {
+    margin: 0 auto 15px;
+  }
+  
+  .highlight-box {
+    flex-direction: column;
+  }
+  
+  .highlight-box .highlight-icon {
+    margin: 0 0 15px 0;
+    text-align: center;
+  }
+  
+  .terminos-footer {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .terminos-header {
+    padding: 20px;
+  }
+  
+  .terminos-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .section-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .terminos-content {
+    padding: 20px;
+  }
+}

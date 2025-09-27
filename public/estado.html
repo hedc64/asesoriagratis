@@ -16,61 +16,58 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main class="container" role="main">
+  <div class="container">
     <header>
       <h1>Estado Actual del Sorteo</h1>
+      <p>Consulta en tiempo real el estado de todos los números del sorteo</p>
     </header>
 
-    <section class="info-box premio-box" aria-label="Premio">
-      <p>Premio: Asesoría para Visa</p>
+    <div class="info-box premio-box">
+      <h2>Premio</h2>
+      <p>Asesoría para Visa</p>
       <p>Participación: Gratis</p>
-    </section>
+    </div>
 
-    <section class="info-box sorteo-box" id="sorteo-date" aria-label="Fecha del sorteo">
+    <div class="info-box sorteo-box" id="sorteo-date">
       <p>Sorteo: Cargando fecha...</p>
+    </div>
+
+    <div class="legend">
+      <h3>Leyenda de Estados</h3>
+      <div class="legend-items">
+        <div class="legend-item">
+          <span class="estado-number disponible"></span>
+          <span>Disponible</span>
+        </div>
+        <div class="legend-item">
+          <span class="estado-number seleccionado"></span>
+          <span>Seleccionado</span>
+        </div>
+        <div class="legend-item">
+          <span class="estado-number validado"></span>
+          <span>Validado</span>
+        </div>
+        <div class="legend-item">
+          <span class="estado-number ganador"></span>
+          <span>Ganador</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="numbers-section">
+      <h2>Números del Sorteo (00-99)</h2>
+      <div id="numbers-grid" class="grid"></div>
     </section>
 
-    <section class="info-box valor-box" aria-label="Leyenda de colores">
-      <p><strong>Verde:</strong> Disponible | <strong>Naranja:</strong> Seleccionado | <strong>Rojo:</strong> Validado | <strong>Azul:</strong> Ganador</p>
-    </section>
+    <footer>
+      <p>Este estado se actualiza automáticamente cada 5 minutos. Última actualización: <span id="last-update">Cargando...</span></p>
+    </footer>
+  </div>
 
-    <section id="numbers-grid" class="grid" aria-label="Grilla de números"></section>
-  </main>
-
-  <script>
-    // Cargar fecha del sorteo
-    fetch('/api/sorteo-date')
-      .then(res => res.json())
-      .then(data => {
-        const sorteoDateElement = document.getElementById('sorteo-date');
-        if (data.date) {
-          const [year, month, day] = data.date.split('-');
-          const date = new Date(year, month - 1, day);
-          const formatted = date.toLocaleDateString('es-ES', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-          sorteoDateElement.innerHTML = `<p>Sorteo: ${formatted} (Últimas dos cifras del sorteo Astro Luna)</p>`;
-        } else {
-          sorteoDateElement.innerHTML = `<p>Sorteo: Próximamente (Últimas dos cifras del sorteo Astro Luna)</p>`;
-        }
-      });
-
-    // Cargar estado de los números
-    fetch('/api/numbers')
-      .then(res => res.json())
-      .then(numbers => {
-        const grid = document.getElementById('numbers-grid');
-        grid.innerHTML = '';
-        numbers.forEach(num => {
-          const div = document.createElement('div');
-          div.className = `number ${num.status}`;
-          div.textContent = num.number;
-          grid.appendChild(div);
-        });
-      });
-  </script>
+  <script src="js/estado.js"></script>
 </body>
 </html>
+
+
+
+

@@ -69,27 +69,8 @@
   </div>
 
   <script src="js/main.js"></script>
-
-<!-- notificacion a telegram confirmacion seleccion -->
-<script>
-  const checkbox = document.getElementById("accept-terms");
-  const button = document.getElementById("confirm-selection");
-
-  checkbox.addEventListener("change", () => {
-    button.disabled = !checkbox.checked;
-  });
-
-  button.addEventListener("click", () => {
-    console.log("Botón clickeado, enviando a Telegram..."); // 👈 Verifica en consola
-    fetch("/api/send-telegram", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mensaje: "✅ Un usuario confirmó su participación desde la app web."
-      })
-    });
-  });
-</script>
-
 </body>
 </html>
+
+
+

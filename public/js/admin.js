@@ -74,69 +74,71 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => console.error('Error al cargar fecha:', err));
   }
 
-  function loadAdminPanel() {
-    if (!checkTokenExpiry()) {
+function loadAdminPanel() {
+  if (!checkTokenExpiry()) {
+    loginForm.style.display = 'block';
+    adminPanel.style.display = 'none';
+    return;
+  }
+
+  loginForm.style.display = 'none';
+  adminPanel.style.display = 'block';
+  loadCurrentSorteoDate();
+
+  fetchWithAuth('/api/admin/numbers')
+    .then(res => res.ok ? res.json() : Promise.reject('Error al cargar números'))
+    .then(numbers => {
+      numbersList.innerHTML = '';
+      pendingNumbersList.innerHTML = '';
+      const pendingNumbers = [];
+
+      numbers.forEach(num => {
+        // Crear elemento para la lista principal
+        const div = document.createElement('div');
+        // Asegurarnos de que la clase CSS se aplique correctamente
+        div.className = `number ${num.status}`;
+        div.textContent = num.number;
+        div.title = `Número: ${num.number}\nEstado: ${num.status}`;
+        div.addEventListener('click', () => {
+          alert(`Detalles del número ${num.number}:\nEstado: ${num.status}`);
+        });
+        numbersList.appendChild(div);
+
+        if (num.status === 'seleccionado') {
+          pendingNumbers.push(num);
+          const pendingDiv = document.createElement('div');
+          pendingDiv.className = 'pending-number';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = num.number;
+          checkbox.id = `pending-${num.number}`;
+
+          const label = document.createElement('label');
+          label.htmlFor = checkbox.id;
+          label.innerHTML = `
+            <span class="number-display">${num.number}</span>
+            <span class="buyer-id">ID: ${num.buyer_id || '—'}</span>`;
+
+          pendingDiv.appendChild(checkbox);
+          pendingDiv.appendChild(label);
+          pendingNumbersList.appendChild(pendingDiv);
+        }
+      });
+
+      const pendingSection = document.getElementById('pending-payments');
+      if (pendingSection) {
+        pendingSection.style.display = pendingNumbers.length > 0 ? 'block' : 'none';
+      }
+    })
+    .catch(err => {
+      console.error('Error:', err);
+      alert('Sesión expirada. Vuelve a iniciar sesión.');
+      localStorage.removeItem('adminToken');
       loginForm.style.display = 'block';
       adminPanel.style.display = 'none';
-      return;
-    }
-
-    loginForm.style.display = 'none';
-    adminPanel.style.display = 'block';
-    loadCurrentSorteoDate();
-
-    fetchWithAuth('/api/admin/numbers')
-      .then(res => res.ok ? res.json() : Promise.reject('Error al cargar números'))
-      .then(numbers => {
-        numbersList.innerHTML = '';
-        pendingNumbersList.innerHTML = '';
-        const pendingNumbers = [];
-
-        numbers.forEach(num => {
-          const div = document.createElement('div');
-          div.className = `number ${num.status}`;
-          div.textContent = num.number;
-          div.title = `Número: ${num.number}\nEstado: ${num.status}`;
-          div.addEventListener('click', () => {
-            alert(`Detalles del número ${num.number}:\nEstado: ${num.status}`);
-          });
-          numbersList.appendChild(div);
-
-          if (num.status === 'seleccionado') {
-            pendingNumbers.push(num);
-            const pendingDiv = document.createElement('div');
-            pendingDiv.className = 'pending-number';
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = num.number;
-            checkbox.id = `pending-${num.number}`;
-
-            const label = document.createElement('label');
-            label.htmlFor = checkbox.id;
-            label.innerHTML = `
-              <span class="number-display">${num.number}</span>
-              <span class="buyer-id">ID: ${num.buyer_id || '—'}</span>`;
-
-            pendingDiv.appendChild(checkbox);
-            pendingDiv.appendChild(label);
-            pendingNumbersList.appendChild(pendingDiv);
-          }
-        });
-
-        const pendingSection = document.getElementById('pending-payments');
-        if (pendingSection) {
-          pendingSection.style.display = pendingNumbers.length > 0 ? 'block' : 'none';
-        }
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        alert('Sesión expirada. Vuelve a iniciar sesión.');
-        localStorage.removeItem('adminToken');
-        loginForm.style.display = 'block';
-        adminPanel.style.display = 'none';
-      });
-  }
+    });
+}
 
   // 📅 Configurar fecha del sorteo
   if (configureSorteoForm) {
