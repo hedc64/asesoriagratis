@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
            // ✅ Enviar notificación por Telegram
-          fetch('/send-telegram', {
+          fetch('/api/send-telegram', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
