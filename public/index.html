@@ -81,7 +81,7 @@
 
   button.addEventListener("click", () => {
     console.log("Botón clickeado, enviando a Telegram..."); // 👈 Verifica en consola
-    fetch("/send-telegram", {
+    fetch("/api/send-telegram", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

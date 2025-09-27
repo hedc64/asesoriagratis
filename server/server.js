@@ -1,6 +1,76 @@
 //server/server.js
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
+
+const initializeDatabase = require('./initDb');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Servir archivos estáticos desde /public
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Ruta raíz para servir index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// Ruta para el panel de administración
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/admin.html'));
+});
+
+// Rutas API
+// Rutas
+const apiRoutes = require('./routes/api');
+const adminRoutes = require('./routes/admin');
+const hasWinnerRouter = require('./routes/hasWinner');
+const numbersRouter = require('./routes/numbers');
+const participacionRouter = require('./routes/participacion');
+const selectRouter = require('./routes/select');
+const sendTelegramRouter = require('./routes/sendTelegram');
+const sorteoDateRouter = require('./routes/sorteoDate'); // Importar la ruta
+
+app.use('/api', apiRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/has-winner', hasWinnerRouter);
+app.use('/api/numbers', numbersRouter);
+app.use('/api/participacion', participacionRouter);
+app.use('/api/select', selectRouter);
+app.use('/api/send-telegram', sendTelegramRouter);
+app.use('/api/sorteo-date', sorteoDateRouter); // Montar la ruta
+
+
+//app.use('/api/admin', require('./routes/admin'));
+//app.use('/api/numbers', require('./routes/numbers'));
+//app.use('/api/select', require('./routes/select'));
+//app.use('/api/participacion', require('./routes/participacion'));
+//app.use('/api/send-telegram', require('./routes/sendTelegram'));
+//app.use('/api/sorteo-date', require('./routes/sorteoDate'));
+//app.use('/api/has-winner', require('./routes/hasWinner'));
+
+
+const PORT = process.env.PORT || 3000;
+
+// Inicializar la base de datos antes de iniciar el servidor
+initializeDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Backend corriendo en puerto ${PORT}`);
+  });
+}).catch(err => {
+  console.error('❌ No se pudo iniciar el servidor:', err.message);
+  process.exit(1);
+});
+
+
+
+
+/*
+const express = require('express');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
