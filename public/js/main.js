@@ -89,6 +89,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 🏆 Verificar si hay ganador
+function checkWinner() {
+  fetch('/api/has-winner')
+    .then(res => res.ok ? res.json() : Promise.reject('Error al verificar ganador'))
+    .then(data => {
+      if (data.hasWinner && data.winner) {
+        const winner = data.winner;
+        const winnerMessage = document.createElement('div');
+        winnerMessage.className = 'winner-message';
+        
+        // Construimos el mensaje con los datos del ganador
+        winnerMessage.innerHTML = `
+          <div class="winner-content">
+            <div class="winner-icon">🏆</div>
+            <div class="winner-text">
+              <h2>¡Sorteo Finalizado!</h2>
+              <p class="winner-announcement">
+                <strong>El ganador es:</strong> ${winner.winner_name || winner.buyer_name}
+              </p>
+              <p class="winner-number">
+                <strong>Número ganador:</strong> ${winner.number}
+              </p>
+              ${winner.buyer_phone ? `<p class="winner-contact"><strong>Teléfono:</strong> ${winner.buyer_phone}</p>` : ''}
+            </div>
+          </div>
+        `;
+
+        // Insertamos el mensaje antes de la grilla
+        grid.parentNode.insertBefore(winnerMessage, grid);
+        
+        // Deshabilitamos la interacción con la grilla
+        grid.style.pointerEvents = 'none';
+        grid.style.opacity = '0.7';
+        selectionInfo.style.display = 'none';
+      }
+    })
+    .catch(err => console.error(err));
+}
+  
+  /*
+  // 🏆 Verificar si hay ganador
   function checkWinner() {
     fetch('/api/has-winner')
       .then(res => res.ok ? res.json() : Promise.reject('Error al verificar ganador'))
@@ -107,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(err => console.error(err));
   }
 
+  */
   // 🔢 Cargar números
 function loadNumbers() {
   fetch('/api/numbers')
