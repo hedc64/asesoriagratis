@@ -109,8 +109,6 @@ function checkWinner() {
               </p>
               <p class="winner-number">
                 <strong>Número ganador:</strong> ${winner.number}
-              </p>
-              ${winner.buyer_phone ? `<p class="winner-contact"><strong>Teléfono:</strong> ${winner.buyer_phone}</p>` : ''}
             </div>
           </div>
         `;
@@ -127,27 +125,6 @@ function checkWinner() {
     .catch(err => console.error(err));
 }
   
-  /*
-  // 🏆 Verificar si hay ganador
-  function checkWinner() {
-    fetch('/api/has-winner')
-      .then(res => res.ok ? res.json() : Promise.reject('Error al verificar ganador'))
-      .then(data => {
-        if (data.hasWinner) {
-          const winnerMessage = document.createElement('div');
-          winnerMessage.className = 'winner-message';
-          winnerMessage.innerHTML = '<h2>¡Sorteo Finalizado!</h2><p>Ya se ha declarado un ganador para este sorteo.</p>';
-
-          grid.style.pointerEvents = 'none';
-          grid.style.opacity = '0.7';
-          grid.parentNode.insertBefore(winnerMessage, grid);
-          selectionInfo.style.display = 'none';
-        }
-      })
-      .catch(err => console.error(err));
-  }
-
-  */
   // 🔢 Cargar números
 function loadNumbers() {
   fetch('/api/numbers')
